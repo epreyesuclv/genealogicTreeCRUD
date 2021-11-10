@@ -35,3 +35,5 @@ Child.init(
     modelName: "Person",
   }
 );
+
+module.exports = { Child };

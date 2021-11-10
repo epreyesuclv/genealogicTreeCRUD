@@ -47,5 +47,5 @@ Person.init(
 );
 
 module.exports = {
-  Person,
+  Person
 };
