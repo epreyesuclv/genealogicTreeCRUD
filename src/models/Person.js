@@ -22,30 +22,29 @@ Person.init(
     },
     name: {
       type: DataTypes.STRING(150),
-      allowNull: true,
     },
-    lastName: {
+    lastname: {
       type: DataTypes.STRING(150),
-      allowNull: true,
     },
+
     gender: {
       type: DataTypes.ENUM(["Male", "Famale", "Other"]),
       allowNull: false,
     },
     married: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
     },
     age: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
+    timestamps: false,
     modelName: "Person",
   }
 );
 
 module.exports = {
-  Person
+  Person,
 };

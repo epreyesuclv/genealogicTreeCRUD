@@ -38,14 +38,15 @@ const createChildQuery = async (data) => {
   }
 };
 
-const getAllByFatherQuery = async ({ fatherID }) => {
+const getAllByFatherQuery = async ({ id }) => {
   try {
     return await Child.findAll({
       where: {
-        personID: fatherID,
+        personID: id,
       },
     });
   } catch (err) {
+    console.log("inside getAllByFatherQuery", err);
     throw new ConnectionError();
   }
 };

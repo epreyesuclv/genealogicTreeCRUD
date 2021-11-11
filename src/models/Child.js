@@ -32,7 +32,7 @@ Child.init(
   },
   {
     sequelize,
-    modelName: "Person",
+    modelName: "Child",
   }
 );
 

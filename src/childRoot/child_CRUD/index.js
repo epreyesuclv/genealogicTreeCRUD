@@ -1,4 +1,6 @@
-async function createChild(req, res) {}
+async function createChild(req, res) {
+  
+}
 
 async function getAllChild(req, res) {}
 

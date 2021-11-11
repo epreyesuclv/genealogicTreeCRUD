@@ -1,13 +1,17 @@
 const express = require("express");
-require("./models/index").sequelize.sync()
+require("./models/index").sequelize.sync();
 const { register, login } = require("./auth");
 const { verifyingToken } = require("./auth/authToken");
-const { getAllPerson, getPersonByID, createPerson, updatePerson, deletePersonByID } = require("./person_CRUD");
+const {
+  getAllPerson,
+  getPersonByID,
+  createPerson,
+  updatePerson,
+  deletePersonByID,
+} = require("./person_CRUD");
 
 // database connection
 require("dotenv").config();
-
-
 
 // port config
 
@@ -35,7 +39,7 @@ app.get("/person/:personid", getPersonByID);
 app.post("/person", verifyingToken, createPerson);
 app.put("/person", verifyingToken, updatePerson);
 app.delete("/person", verifyingToken, deletePersonByID);
-
+app.delete("/person/:personid", verifyingToken, deletePersonByID);
 app.use("/person/:personid", require("./childRoot"));
 
 //runserver

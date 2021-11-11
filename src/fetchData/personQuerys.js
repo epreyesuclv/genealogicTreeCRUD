@@ -5,15 +5,17 @@ const {
   StringTooShort,
   WrongKey,
 } = require("../errors");
+const { Child } = require("../models/Child");
 
 const { Person } = require("../models/Person");
 
 const getAllPersonQuery = async () => {
   //throw ConnectionError
-  
+
   try {
     return await Person.findAll();
   } catch (err) {
+    console.log(err);
     throw ConnectionError();
   }
 };
@@ -24,7 +26,9 @@ const getPersonByIDQuery = async ({ id }) => {
 
   try {
     return await Person.findByPk(id);
+    
   } catch (err) {
+    console.log("inside getPersonByIDQuery",err)
     throw ConnectionError();
   }
 };
@@ -34,14 +38,16 @@ const createPersonQuery = async (data) => {
 
   if (!data.id || !data.gender) throw new InputRequire();
 
-  if (data.name?.length ?? 0 < 20) throw new StringTooShort();
+  if ((data.name?.length ?? 0) < 20) throw new StringTooShort();
 
   if (!["Male", "Famale", "Other"].includes(data.gender))
     throw new WrongGender();
 
   try {
+    console.log(data)
     return await Person.create(data);
   } catch (err) {
+    console.log(err)
     throw new ConnectionError();
   }
 };
@@ -74,7 +80,7 @@ const updatePersonQuery = async ({ id, toUpdate }) => {
 
 const deletePersonQuery = async ({ id }) => {
   //throw InputRequre , WrongKey , ConnectionError
-  
+
   if (!id) throw new InputRequire();
   let person;
   try {
