@@ -4,6 +4,7 @@ const {
   WrongGender,
   StringTooShort,
   WrongKey,
+  Duplicate,
 } = require("../errors");
 const { Child } = require("../models/Child");
 
@@ -12,10 +13,10 @@ const { Person } = require("../models/Person");
 const getAllPersonQuery = async () => {
   //throw ConnectionError
 
-  try {
+  try { 
     return await Person.findAll();
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     throw ConnectionError();
   }
 };
@@ -26,15 +27,14 @@ const getPersonByIDQuery = async ({ id }) => {
 
   try {
     return await Person.findByPk(id);
-    
   } catch (err) {
-    console.log("inside getPersonByIDQuery",err)
+    //console.log("inside getPersonByIDQuery", err);
     throw ConnectionError();
   }
 };
 
 const createPersonQuery = async (data) => {
-  //throw InputRequre , StringTooShort , WrongGender , ConnectionError
+  //throw InputRequre , StringTooShort , WrongGender , ConnectionError , Duplicate
 
   if (!data.id || !data.gender) throw new InputRequire();
 
@@ -44,11 +44,14 @@ const createPersonQuery = async (data) => {
     throw new WrongGender();
 
   try {
-    console.log(data)
+    //console.log(data);
+    const person = await Person.findByPk(data.id)
+    if (person) throw new Duplicate();
     return await Person.create(data);
   } catch (err) {
-    console.log(err)
-    throw new ConnectionError();
+    //console.log(err);
+    if (err instanceof Duplicate) throw new Duplicate();
+    else throw new ConnectionError();
   }
 };
 

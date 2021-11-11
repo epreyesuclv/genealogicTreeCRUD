@@ -13,6 +13,7 @@ const {
   ConnectionError,
   WrongKey,
   InputRequire,
+  Duplicate,
 } = require("../errors");
 
 async function createPerson(req, res) {
@@ -33,6 +34,9 @@ async function createPerson(req, res) {
     res.status(200).json(person);
   } catch (err) {
     console.log(err);
+
+    if (err instanceof Duplicate)
+      res.status(409).send("this ID is already in use");
     if (err instanceof InputRequire)
       res.status(403).send("ID an Gender is required");
 
@@ -119,12 +123,18 @@ async function deletePersonByID(req, res) {
 }
 
 async function getPersonByID(req, res) {
+  //console.log(req.params);
   const id = req.params.personid;
 
   try {
     const person = await getPersonByIDQuery({ id });
     const childs = await getAllByFatherQuery({ id });
-    person.childs = childs;
+    person.dataValues.childs = [];
+    childs.forEach((value) => {
+      person.dataValues.childs.push(value.dataValues);
+    });
+
+    console.log(person);
     res.status(200).json(person);
   } catch (err) {
     if (err instanceof InputRequire)

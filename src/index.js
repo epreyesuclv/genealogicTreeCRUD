@@ -1,7 +1,8 @@
 const express = require("express");
 require("./models/index").sequelize.sync();
-const { register, login } = require("./auth");
-const { verifyingToken } = require("./auth/authToken");
+const { register, login } = require("./middelwares/auth");
+const { verifyingToken } = require("./middelwares/authToken");
+const { childConfig } = require("./middelwares/child_config");
 const {
   getAllPerson,
   getPersonByID,
@@ -40,7 +41,8 @@ app.post("/person", verifyingToken, createPerson);
 app.put("/person", verifyingToken, updatePerson);
 app.delete("/person", verifyingToken, deletePersonByID);
 app.delete("/person/:personid", verifyingToken, deletePersonByID);
-app.use("/person/:personid", require("./childRoot"));
+
+app.use("/person/:personid", childConfig, require("./childRoot"));
 
 //runserver
 app.listen(port, () => {

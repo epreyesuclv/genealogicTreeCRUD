@@ -3,9 +3,9 @@ const {
   IncorrectCredentials,
   DuplicateEmail,
   ConnectionError,
-} = require("../errors");
+} = require("../../errors");
 
-const { cleanRegister, cleanLogin } = require("../fetchData/cleanAuth");
+const { cleanRegister, cleanLogin } = require("../../fetchData/cleanAuth");
 
 async function register(req, res) {
   //console.log("request", req)
