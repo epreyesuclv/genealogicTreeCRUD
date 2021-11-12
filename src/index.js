@@ -17,10 +17,19 @@ const {
 //loading .env file
 require("dotenv").config();
 
+
+//for documentation 
+
+const { apiDocumentation } = require('../doc/apidoc.js')
+//for documentation with swagger
+const swaggerui = require("swagger-ui-express")
 // port config
 var port = process.env.PORT || 4000;
 
 const app = express();
+
+app.use("/api-doc", swaggerui.serve, swaggerui.setup(apiDocumentation))
+
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -41,8 +50,9 @@ app.get("/person/:personid", getPersonByID);
 //routes that need middelwares
 app.post("/person", verifyingToken, createPerson);
 app.put("/person", verifyingToken, updatePerson);
-app.put("/person/:personid", verifyingToken, updatePerson);
+
 app.delete("/person", verifyingToken, deletePersonByID);
+app.put("/person/:personid", verifyingToken, updatePerson);
 app.delete("/person/:personid", verifyingToken, deletePersonByID);
 
 app.use("/person/:personid", childConfig, require("./childRoot"));

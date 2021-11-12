@@ -62,7 +62,7 @@ async function createPerson(req, res) {
 }
 
 async function getAllPerson(req, res) {
-//this function respond a list of Person in json format
+  //this function respond a list of Person in json format
 
   try {
     let persons = await getAllPersonQuery();
@@ -90,7 +90,7 @@ async function getAllPerson(req, res) {
 async function updatePerson(req, res) {
   //finds the person that match with the given "id", and change its attributes
   /** "toUpdate" need to be as follow example
-   * 
+   *
    * toUpdate:{
    * name:"example",
    * lastname:"example",
@@ -98,9 +98,9 @@ async function updatePerson(req, res) {
    * married:true,
    * age:32
    * }
-   * 
+   *
    * you can omit the attributes that you don't want to change
-   */ 
+   */
   const { id } = req.body || req.params;
 
   const { toUpdate } = req.body;
@@ -112,7 +112,7 @@ async function updatePerson(req, res) {
     childs.forEach((value) => {
       person.dataValues.childs.push(value.dataValues);
     });
-    
+
     res.status(200).json(person);
   } catch (err) {
     if (err instanceof InputRequire)
@@ -150,8 +150,7 @@ async function deletePersonByID(req, res) {
 }
 
 async function getPersonByID(req, res) {
-
-  //make a response with the person that match with the given "id" , in json format 
+  //make a response with the person that match with the given "id" , in json format
 
   //console.log(req.params);
   const id = req.params.personid;
@@ -159,9 +158,9 @@ async function getPersonByID(req, res) {
   try {
     const person = await getPersonByIDQuery({ id });
     const childs = await getAllByFatherQuery({ id });
-    person.dataValues.childs = [];
+    person.dataValues.children = [];
     childs.forEach((value) => {
-      person.dataValues.childs.push(value.dataValues);
+      person.dataValues.children.push(value.dataValues);
     });
 
     console.log(person);

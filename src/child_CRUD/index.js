@@ -39,7 +39,7 @@ async function createChild(req, res) {
         .status(409)
         .send("your name is too short, it must have at least 20 characters");
     if (err instanceof ConnectionError)
-      res.status(500).send("This is probable a database issue");
+      res.status(503).send("This is probable a database issue");
   }
 }
 
@@ -50,7 +50,7 @@ async function getAllChild(req, res) {
   } catch (err) {
     //console.log(err);
     if (err instanceof ConnectionError)
-      res.status(500).send("somthing was  wrong with the database");
+      res.status(503).send("somthing was  wrong with the database");
   }
 }
 
@@ -65,7 +65,7 @@ async function deleteChildByID(req, res) {
     if (err instanceof WrongKey) res.status(409).send("this ID doesn't exist");
 
     if (err instanceof ConnectionError)
-      res.status(500).send("This is probable a database issue");
+      res.status(503).send("This is probable a database issue");
   }
 }
 
@@ -81,7 +81,7 @@ async function getChildByID(req, res) {
     if (err instanceof InputRequire) res.status(403).send("ID required");
     if (err instanceof WrongKey) res.status(409).send("this ID doesn't exist");
     if (err instanceof ConnectionError)
-      res.status(500).send("This is probable a database issue");
+      res.status(503).send("This is probable a database issue");
   }
 }
 
