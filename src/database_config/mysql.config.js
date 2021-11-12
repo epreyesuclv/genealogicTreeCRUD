@@ -1,3 +1,5 @@
+//sequelize configuration for mysql
+
 module.exports = {
     HOST: "localhost",
     USER: "root",

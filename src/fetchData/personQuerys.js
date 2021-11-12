@@ -6,14 +6,16 @@ const {
   WrongKey,
   Duplicate,
 } = require("../errors");
-const { Child } = require("../models/Child");
 
 const { Person } = require("../models/Person");
+//all these function interact with the model
+
 
 const getAllPersonQuery = async () => {
-  //throw ConnectionError
+  //returns all "Person"s
+  //throws ConnectionError
 
-  try { 
+  try {
     return await Person.findAll();
   } catch (err) {
     //console.log(err);
@@ -22,19 +24,24 @@ const getAllPersonQuery = async () => {
 };
 
 const getPersonByIDQuery = async ({ id }) => {
+  //returns a "Person" that math with the given "id"
   if (!id) throw new InputRequire();
-  //throw InputRequre ,ConnectionError
+  //throws InputRequre ,ConnectionError
 
   try {
-    return await Person.findByPk(id);
+    const person = await Person.findByPk(id);
+    if (!person) throw new WrongKey();
+    return person;
   } catch (err) {
+    if (err instanceof WrongKey) throw new WrongKey();
     //console.log("inside getPersonByIDQuery", err);
-    throw ConnectionError();
+    else throw ConnectionError();
   }
 };
 
 const createPersonQuery = async (data) => {
-  //throw InputRequre , StringTooShort , WrongGender , ConnectionError , Duplicate
+  //creates a "Person" with the given data
+  //throws InputRequre , StringTooShort , WrongGender , ConnectionError , Duplicate
 
   if (!data.id || !data.gender) throw new InputRequire();
 
@@ -45,7 +52,7 @@ const createPersonQuery = async (data) => {
 
   try {
     //console.log(data);
-    const person = await Person.findByPk(data.id)
+    const person = await Person.findByPk(data.id);
     if (person) throw new Duplicate();
     return await Person.create(data);
   } catch (err) {
@@ -56,7 +63,8 @@ const createPersonQuery = async (data) => {
 };
 
 const updatePersonQuery = async ({ id, toUpdate }) => {
-  //throw InputRequre , WrongKey , ConnectionError
+  //updates the "Person" with the given data
+  //throws InputRequre , WrongKey , ConnectionError
 
   if (!id) throw new InputRequire();
 
@@ -70,11 +78,11 @@ const updatePersonQuery = async ({ id, toUpdate }) => {
 
   if (!person) throw new WrongKey();
 
-  person.name = toUpdate.name || person.name;
-  person.gender = toUpdate.gender || person.gender;
-  person.lastName = toUpdate.lastName || person.lastName;
-  person.married = toUpdate.married || person.married;
-  person.age = toUpdate.age || person.age;
+  person.name = toUpdate.name ?? person.name;
+  person.gender = toUpdate.gender ?? person.gender;
+  person.lastname = toUpdate.lastname ?? person.lastname;
+  person.married = toUpdate.married ?? person.married;
+  person.age = toUpdate.age ?? person.age;
 
   await person.save();
 
@@ -82,7 +90,8 @@ const updatePersonQuery = async ({ id, toUpdate }) => {
 };
 
 const deletePersonQuery = async ({ id }) => {
-  //throw InputRequre , WrongKey , ConnectionError
+  //deletes the "Person" that match with the given id
+  //throws InputRequre , WrongKey , ConnectionError
 
   if (!id) throw new InputRequire();
   let person;

@@ -6,9 +6,12 @@ const {
   Duplicate,
 } = require("../errors");
 
+//all this functions interact with the model,
+
 const { Child } = require("../models/Child");
 
 const getAllChildQuery = async () => {
+  // returns all children
   //throw ConnectionError
   try {
     return await Child.findAll();
@@ -18,6 +21,7 @@ const getAllChildQuery = async () => {
 };
 
 const getChildByIDQuery = async ({ id }) => {
+  //returns the child that match with the given "id"
   //throws InputRequire , WrongKey , ConnectionError
   let child;
   try {
@@ -33,7 +37,8 @@ const getChildByIDQuery = async ({ id }) => {
 };
 
 const createChildQuery = async (data) => {
-  //throw InputRequire , StringTooShort , ConnectionError , DUplicate
+  //creates a new child with the given data
+  //throws InputRequire , StringTooShort , ConnectionError , DUplicate
   if (!data.id) throw new InputRequire();
 
   if ((data.name?.length ?? 0) < 20) throw new StringTooShort();
@@ -52,6 +57,8 @@ const createChildQuery = async (data) => {
 };
 
 const getAllByFatherQuery = async ({ id }) => {
+  //finds all "Child"s  that match "personID" with the "id" pass as parameters
+  //in other words , finds all children that has as father the one given as parameters
   try {
     return await Child.findAll({
       where: {
@@ -65,6 +72,7 @@ const getAllByFatherQuery = async ({ id }) => {
 };
 
 const deleteChildQuery = async ({ id }) => {
+  //deletes the child that match with the given "id"
   //throws InputRequire , WrongKey , ConnectionError
   if (!id) throw new InputRequire();
   let child;

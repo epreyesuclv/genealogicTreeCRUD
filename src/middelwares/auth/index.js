@@ -7,6 +7,9 @@ const {
 
 const { cleanRegister, cleanLogin } = require("../../fetchData/cleanAuth");
 
+
+//for register a new user
+//http://localhost/register
 async function register(req, res) {
   //console.log("request", req)
   const { name, email, password } = req.body;

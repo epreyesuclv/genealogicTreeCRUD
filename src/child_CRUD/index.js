@@ -11,12 +11,16 @@ const {
   deleteChildQuery,
   getChildByIDQuery,
 } = require("../fetchData/childQuery");
-const { deletePersonQuery } = require("../fetchData/personQuerys");
+
+//these function are in charge to handle data pass in the req and respond accordingly to that, handle error and
+//fetch the data
 
 async function createChild(req, res) {
+  //creates a new child
+
   const { personID } = req;
   //console.log(personID);
-  
+
   const { id, name } = req.body;
   try {
     const newChild = await createChildQuery({
@@ -24,7 +28,7 @@ async function createChild(req, res) {
       name,
       personID,
     });
-    res.status(200).send(newChild)
+    res.status(200).send(newChild);
   } catch (err) {
     //console.log(err)
     if (err instanceof Duplicate)
@@ -40,8 +44,9 @@ async function createChild(req, res) {
 }
 
 async function getAllChild(req, res) {
+  //make a response with all "Child"s in json format , this function is never used
   try {
-    return await getAllChildQuery();
+    res.status(200).json(await getAllChildQuery());
   } catch (err) {
     //console.log(err);
     if (err instanceof ConnectionError)
@@ -50,9 +55,11 @@ async function getAllChild(req, res) {
 }
 
 async function deleteChildByID(req, res) {
+  //deletes a "Child" with the give "id"
   try {
-    const { id } = req.body;
-    await deleteChildQuery({ id });
+    const { childid } = req.params;
+    await deleteChildQuery({ id: childid });
+    res.status(200).send(`${childid} deleted successful`);
   } catch (err) {
     if (err instanceof InputRequire) res.status(403).send("ID required");
     if (err instanceof WrongKey) res.status(409).send("this ID doesn't exist");
@@ -63,6 +70,8 @@ async function deleteChildByID(req, res) {
 }
 
 async function getChildByID(req, res) {
+  //make a response with the "Child" that match with the given "id", in json format
+
   try {
     const { id } = req.body;
     const child = await getChildByIDQuery({ id });

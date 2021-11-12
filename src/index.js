@@ -1,7 +1,10 @@
 const express = require("express");
+
+// database connection
 require("./models/index").sequelize.sync();
+
 const { register, login } = require("./middelwares/auth");
-const { verifyingToken } = require("./middelwares/authToken");
+const { verifyingToken } = require("./middelwares/verifyingToken");
 const { childConfig } = require("./middelwares/child_config");
 const {
   getAllPerson,
@@ -11,11 +14,10 @@ const {
   deletePersonByID,
 } = require("./person_CRUD");
 
-// database connection
+//loading .env file
 require("dotenv").config();
 
 // port config
-
 var port = process.env.PORT || 4000;
 
 const app = express();
@@ -26,10 +28,9 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 
-//rutas
+//routes
 
 //authentication
-
 app.post("/register", register);
 app.post("/login", login);
 
@@ -37,8 +38,10 @@ app.post("/login", login);
 app.get("/person", getAllPerson);
 app.get("/person/:personid", getPersonByID);
 
+//routes that need middelwares
 app.post("/person", verifyingToken, createPerson);
 app.put("/person", verifyingToken, updatePerson);
+app.put("/person/:personid", verifyingToken, updatePerson);
 app.delete("/person", verifyingToken, deletePersonByID);
 app.delete("/person/:personid", verifyingToken, deletePersonByID);
 

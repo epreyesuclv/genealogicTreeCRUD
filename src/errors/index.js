@@ -1,3 +1,5 @@
+//these class are used for error handler purpose
+
 class InputRequire extends Error {
   constructor() {
     super();

@@ -12,8 +12,8 @@ const { User } = require("../models/User");
 
 require("dotenv").config();
 
-const EXPIRES_TIME = 10;
-//throw: InputRequireError , IncorrectCredentialError
+const { EXPIRES_TIME } = process.env || 10;
+//throws: InputRequireError , IncorrectCredentialError
 async function cleanLogin(email, password) {
   if (!(email && password)) {
     throw new InputRequire();
@@ -77,6 +77,7 @@ async function cleanRegister(name, email, password) {
   return user;
 }
 
+//returns a token for a specific "email" using JWT
 function getToken(email) {
   //console.log("cleanAuth-getToken", email);
   const token = jwt.sign(

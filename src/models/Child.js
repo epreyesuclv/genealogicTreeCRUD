@@ -24,6 +24,8 @@ Child.init(
     },
     personID: {
       type: DataTypes.STRING,
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
       references: {
         model: Person,
         key: "id",
